@@ -1,0 +1,10 @@
+<h1>Posts display</h1>
+
+<% @posts.each do |post| %>
+  <div class="post">
+      <h1><%= post.title %></h1>
+      <p class="author"><em><%= post.user.username %></em></p>
+      <p><%= post.body %></p>
+  </div>
+<% end %>
+
