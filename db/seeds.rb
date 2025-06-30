@@ -12,8 +12,10 @@ require "faker"
 
 User.destroy_all
 Post.destroy_all
+Follow.destroy_all
+Comment.destroy_all
 
-
+puts "Seeded 5 users with 3 posts each. Each post has 2 comments!"
 5.times do
   user = User.create!(
     email: Faker::Internet.unique.email,
@@ -22,12 +24,37 @@ Post.destroy_all
     username: Faker::Internet.unique.username
   )
   3.times do
-    Post.create!(
+    post = Post.create!(
       title: Faker::Book.title,
       body: Faker::Lorem.paragraph(sentence_count: 5),
       user: user
     )
+
+    2.times do
+      Comment.create!(
+        body: Faker::Lorem.sentence,
+        user: User.all.sample,
+        post: post
+      )
+    end
   end
 end
 
-puts "Seeded 5 users with 3 posts each!"
+puts "Creating follow requests & accepted follows..."
+
+User.all.each do |user|
+  others = User.all - [ user ]
+  others.sample(2).each do |other|
+    Follow.create!(
+    follower: user,
+    followed: other,
+    status: "pending"
+  )
+  end
+  follower = others.sample
+  Follow.create!(
+    follower: follower,
+    followed: user,
+    status: "accepted"
+  )
+end

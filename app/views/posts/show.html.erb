@@ -1,0 +1,43 @@
+<div class="post">
+    <h1><%= @post.title %></h1>
+    <p class="author"><em><%= @post.user.username %></em></p>
+    <p><%= @post.body %></p>
+</div>
+
+<div class="comment-section">
+  <h1>Comments</h1>
+
+  <% @post.comments.each do |comment| %>
+    <div class="comment">
+      <p><strong><%= comment.user.username %>:</strong></p>
+      <p><%= comment.body %></p>
+      <% if comment.user == current_user %>
+      <%= button_to "Edit", edit_comment_path(comment.id), method: :get %>
+      <%= button_to "Delete", comment_path(comment.id), method: :delete, data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <h2>Write a public comment...</h2>
+  <%= form_with model: [@post, @comment] do |form| %>
+    <% if @comment.errors.any? %>
+      <div>
+        <h3><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
+        <ul>
+          <% @comment.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :body, "Your Comment" %><br>
+      <%= form.text_area :body %>
+    </div>
+
+    <div>
+      <%= form.submit "Post Comment" %>
+    </div>
+  <% end %>
+</div>

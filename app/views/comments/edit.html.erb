@@ -1,0 +1,22 @@
+<h1>Edit your comment!</h1>
+
+<%= form_with model: @comment do |form| %>
+<% if @comment.errors.any? %>
+    <div>
+      <h3><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
+      <ul>
+        <% @comment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div>
+    <%= form.label :body, "Edit your comment" %><br>
+    <%= form.text_area :body %>
+  </div>
+
+  <div>
+    <%= form.submit "Update Comment" %>
+  </div>
+<% end %>

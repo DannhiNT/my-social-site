@@ -1,0 +1,27 @@
+<h1>Edit your post!</h1>
+
+<%= form_with model: @post do |form| %>
+<% if @post.errors.any? %>
+    <div>
+      <h3><%= pluralize(@post.errors.count, "error") %> prevented this post from being saved:</h3>
+      <ul>
+        <% @post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div>
+    <%= form.label :title, "Title" %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :body, "Content" %><br>
+    <%= form.text_area :body %>
+  </div>
+
+  <div>
+    <%= form.submit "Edit Post" %>
+  </div>
+<% end %>

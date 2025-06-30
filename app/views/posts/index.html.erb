@@ -1,10 +1,29 @@
 <h1>Posts display</h1>
 
+<%= link_to "Following list", followings_user_path(current_user.id) %>
+<%= link_to "Follower list", followers_user_path(current_user.id) %>
+<%= link_to "My profile", user_path(current_user.id) %>
+
+
+<%= button_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" }%>
+
+
 <% @posts.each do |post| %>
   <div class="post">
       <h1><%= post.title %></h1>
       <p class="author"><em><%= post.user.username %></em></p>
+      <% if post.user != current_user %>
+        <% unless current_user.followers.include?(post.user) || current_user.pending_followings.include?(post.user) %>
+          <%= button_to "Follow", follows_path(followed_id: post.user.id), method: :post %>
+        <% else %>
+          <% follow = current_user.active_follows.find_by(followed_id: post.user.id) || current_user.pending_active_follows. find_by(followed_id: post.user.id) %>
+          <% if follow %>
+          <%= button_to "Unfollow", follow_path(follow.id), method: :delete, data: { confirm: "Are you sure?" } %>
+          <% end %>
+        <% end %>
+      <% end %>
       <p><%= post.body %></p>
+      <%= link_to "View", post_path(post.id) %>
   </div>
 <% end %>
 
