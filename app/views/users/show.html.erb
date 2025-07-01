@@ -1,6 +1,18 @@
+<%= link_to "My profile", user_path(current_user.id) %>
+<%= link_to "Edit my profile", edit_user_registration_path %>
+<%= link_to "Feed", posts_path %>
+
+<%= button_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" }%>
+<%= button_to "Signup", new_user_registration_path, method: :get %>
+<%= button_to "Signin", new_user_session_path, method: :get %>
+
+<%= button_to "Create new Post!", new_post_path, method: :get %>
+
 <h1><%= @user.username %>'s Profile</h1>
 
 <p>Email: <%= @user.email %></p>
+
+<%= image_tag current_user.avatar_url, alt: "Profile photo" %>
 
 <p>
   <%= link_to "Following: #{@user.followings.count}", followings_user_path(@user.id) %> 
@@ -18,10 +30,16 @@
   <% @posts.each do |post| %>
     <div class="post">
       <h3><%= post.title %></h3>
+      <% if post.images.attached? %>
+        <% post.images.each do |image| %>
+        <%= image_tag image%>
+        <% end %>
+      <% end %>
       <p><%= post.body %></p>
       <%= link_to "View Post", post_path(post) %>
       <% if @user == current_user %>
       <%= link_to "Edit Post", edit_post_path(post) %>
+      <%= button_to "Delete Post", post_path(post.id), method: :delete, data: { confirm: "Are you sure?" } %>
       <% end %>
     </div>
   <% end %>

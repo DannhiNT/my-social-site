@@ -11,6 +11,12 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="field">
+  <%= form.label :images, "Upload Images" %><br>
+  <%= form.file_field :images, multiple: true %>
+  </div>
+  
   <div>
     <%= form.label :title, "Title" %><br>
     <%= form.text_field :title %>

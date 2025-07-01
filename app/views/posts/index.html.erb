@@ -1,14 +1,12 @@
 <h1>Posts display</h1>
 
-<%= link_to "Following list", followings_user_path(current_user.id) %>
-<%= link_to "Follower list", followers_user_path(current_user.id) %>
 <%= link_to "My profile", user_path(current_user.id) %>
-
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" }%>
 <%= button_to "Signup", new_user_registration_path, method: :get %>
 <%= button_to "Signin", new_user_session_path, method: :get %>
 
+<%= button_to "Create new Post!", new_post_path, method: :get %>
 
 
 <% @posts.each do |post| %>
@@ -23,6 +21,11 @@
           <% if follow %>
           <%= button_to "Unfollow", follow_path(follow.id), method: :delete, data: { confirm: "Are you sure?" } %>
           <% end %>
+        <% end %>
+      <% end %>
+      <% if post.images.attached? %>
+        <% post.images.each do |image| %>
+        <%= image_tag image%>
         <% end %>
       <% end %>
       <p><%= post.body %></p>

@@ -11,7 +11,7 @@ class FollowsController < ApplicationController
   def approve
     @follow = current_user.pending_passive_follows.find(params[:id])
     @follow.update(status: "accepted")
-    redirect_to current_user, notice: "You approved the follow request!"
+    redirect_to pending_followers_user_path, notice: "You approved the follow request!"
   end
 
   def destroy

@@ -1,6 +1,6 @@
 <h1>What's on your mind? </h1>
 
-<%= form_with model: @post do |form| %>
+<%= form_with model: @post, html: { multipart: true } do |form| %>
   <% if @post.errors.any? %>
     <div style="color: red;">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -11,6 +11,11 @@
       </ul>
     </div>
   <% end %>
+
+<div class="field">
+  <%= form.label :images, "Upload Images" %><br>
+  <%= form.file_field :images, multiple: true %>
+</div>
 
 <div>
   <%= form.label :title %>

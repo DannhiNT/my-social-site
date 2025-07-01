@@ -66,3 +66,9 @@ gem "devise", "~> 4.9"
 gem "dotenv-rails", groups: [ :development, :test ]
 
 gem "faker", "~> 3.5"
+
+gem "omniauth-google-oauth2", "~> 1.2"
+
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+
+gem "omniauth", "~> 2.1"
