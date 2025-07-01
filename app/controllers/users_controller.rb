@@ -12,4 +12,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @followers = @user.followers
   end
+
+  def pending_followers
+    @user = User.find(params[:id])
+    @pending_followers = @user.pending_followers
+  end
 end

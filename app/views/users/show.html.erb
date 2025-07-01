@@ -3,8 +3,11 @@
 <p>Email: <%= @user.email %></p>
 
 <p>
-  <%= link_to "Following: #{@user.followings.count}", followings_user_path(@user.id) %> |
+  <%= link_to "Following: #{@user.followings.count}", followings_user_path(@user.id) %> 
   <%= link_to "Followers: #{@user.followers.count}", followers_user_path(@user.id) %>
+  <% if @user == current_user %>
+  <%= link_to "Follow request: #{@user.pending_followers.count}", pending_followers_user_path(@user.id) %>
+  <% end %>
 </p>
 
 <hr>
@@ -17,12 +20,15 @@
       <h3><%= post.title %></h3>
       <p><%= post.body %></p>
       <%= link_to "View Post", post_path(post) %>
+      <% if @user == current_user %>
       <%= link_to "Edit Post", edit_post_path(post) %>
+      <% end %>
     </div>
   <% end %>
 <% else %>
   <p>This user has no posts yet.</p>
 <% end %>
 
-
+<% if @user == current_user %>
 <%= button_to "Create new Post!", new_post_path, method: :get %>
+<% end %>

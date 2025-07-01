@@ -6,12 +6,15 @@
 
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" }%>
+<%= button_to "Signup", new_user_registration_path, method: :get %>
+<%= button_to "Signin", new_user_session_path, method: :get %>
+
 
 
 <% @posts.each do |post| %>
   <div class="post">
       <h1><%= post.title %></h1>
-      <p class="author"><em><%= post.user.username %></em></p>
+      <p class="author"><em><%= link_to post.user.username, user_path(post.user.id) %></em></p>
       <% if post.user != current_user %>
         <% unless current_user.followers.include?(post.user) || current_user.pending_followings.include?(post.user) %>
           <%= button_to "Follow", follows_path(followed_id: post.user.id), method: :post %>
@@ -24,6 +27,12 @@
       <% end %>
       <p><%= post.body %></p>
       <%= link_to "View", post_path(post.id) %>
+      <% if current_user.liked_posts.include?(post) %>
+        <%= button_to "Unlike", like_path(post.id, redirect_to: posts_path), method: :delete, data: { confirm: "Are you sure?" } %>
+        <% else %>
+        <%= button_to "Like", likes_path(post_id: post.id, redirect_to: posts_path), method: :post %>
+      <% end %>
+      <p><%= pluralize(post.likes.count, "likes") %></p>
   </div>
 <% end %>
 

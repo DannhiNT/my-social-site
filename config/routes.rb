@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     member do
       get :followings
       get :followers
+      get :pending_followers
     end
     resources :posts, only: [ :index ]
   end
@@ -13,6 +14,8 @@ Rails.application.routes.draw do
   resources :posts, only: [ :index, :new, :create, :show, :destroy, :edit, :update ] do
     resources :comments, only: [ :create ]
   end
+
+  resources :likes, only: [ :create, :destroy ]
 
   resources :comments, only: [ :destroy, :edit, :update ]
   resources :follows, only: [ :create, :destroy ] do

@@ -1,0 +1,20 @@
+<h1><%= @user.username%>'s follow request:</h1>
+
+<% if @pending_followers.any? %>
+  <ul>
+    <% @pending_followers.each do |pending_follower| %>
+      <li>
+        <%= pending_follower.username %>
+        <% if pending_follower != current_user %>
+          <% follow = current_user.pending_passive_follows.find_by(follower_id: pending_follower.id) %>
+          <% if follow %>
+            <%= button_to "Accept", approve_follow_path(follow.id), method: :patch %>
+            <%= button_to "Reject", follow_path(follow.id), method: :delete %>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No pending followers to show.</p>
+<% end %>

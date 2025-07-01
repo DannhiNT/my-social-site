@@ -13,16 +13,15 @@ class User < ApplicationRecord
   has_many :passive_follows,  -> { where(status: "accepted") }, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
   has_many :pending_active_follows,  -> { where(status: "pending") }, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :pending_passive_follows,  -> { where(status: "pending") }, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
-
   # Users this user follows (accepted)
   has_many :followings, through: :active_follows, source: :followed
-
   # Users following this user (accepted)
   has_many :followers, through: :passive_follows, source: :follower
-
   # Users this user follows (pending)
   has_many :pending_followings, through: :pending_active_follows, source: :followed
-
   # Users following this user (pending)
   has_many :pending_followers, through: :pending_passive_follows, source: :follower
+
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :post
 end

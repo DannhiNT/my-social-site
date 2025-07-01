@@ -2,6 +2,19 @@
     <h1><%= @post.title %></h1>
     <p class="author"><em><%= @post.user.username %></em></p>
     <p><%= @post.body %></p>
+    <% if current_user.liked_posts.include?(@post) %>
+        <%= button_to "Unlike", like_path(@post.id, redirect_to: post_path(@post)), method: :delete, data: { confirm: "Are you sure?" } %>
+        <% else %>
+        <%= button_to "Like", likes_path(post_id: @post.id, redirect_to: post_path(@post)), method: :post%>
+      <% end %>
+      <p><%= pluralize(@post.likes.count, "likes") %></p>
+      <% if @post.liked_users.any? %>
+      <p>Liked by:
+      <% @post.liked_users.each do |liked_user| %>
+      <%= link_to liked_user.username, user_path(liked_user.id) %>
+      <% end %>
+      </p>
+      <% end %>
 </div>
 
 <div class="comment-section">
@@ -17,6 +30,7 @@
       <% end %>
     </div>
   <% end %>
+  
 
   <h2>Write a public comment...</h2>
   <%= form_with model: [@post, @comment] do |form| %>
