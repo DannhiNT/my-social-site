@@ -1,41 +1,48 @@
-<h1>Posts display</h1>
+<%= render 'layouts/nav' %>
 
-<%= link_to "My profile", user_path(current_user.id) %>
-
-<%= button_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" }%>
-<%= button_to "Signup", new_user_registration_path, method: :get %>
-<%= button_to "Signin", new_user_session_path, method: :get %>
-
-<%= button_to "Create new Post!", new_post_path, method: :get %>
-
-
+<div class="flex flex-col gap-y-6 p-4">
 <% @posts.each do |post| %>
-  <div class="post">
-      <h1><%= post.title %></h1>
-      <p class="author"><em><%= link_to post.user.username, user_path(post.user.id) %></em></p>
-      <% if post.user != current_user %>
-        <% unless current_user.followers.include?(post.user) || current_user.pending_followings.include?(post.user) %>
-          <%= button_to "Follow", follows_path(followed_id: post.user.id), method: :post %>
-        <% else %>
-          <% follow = current_user.active_follows.find_by(followed_id: post.user.id) || current_user.pending_active_follows. find_by(followed_id: post.user.id) %>
-          <% if follow %>
-          <%= button_to "Unfollow", follow_path(follow.id), method: :delete, data: { confirm: "Are you sure?" } %>
+    <div class="post w-full mx-auto max-w-lg bg-white p-4 sm:p-6 border border-black-200">
+      <h1 class="title text-xl font-bold mb-2" ><%= post.title %></h1>
+      <div class="flex items-center gap-x-2 mb-2">
+        <p class="author text-md text-gray-500 mb-2 hover:underline cursor-pointer"><em><%= link_to post.user.username, user_path(post.user.id) %></em></p>
+        <% if post.user != current_user %>
+          <% unless current_user.followings.include?(post.user) || current_user.pending_followings.include?(post.user) %>
+            <%= button_to follows_path(followed_id: post.user.id, redirect_to: posts_path), method: :post, class: "follow inline-flex items-center" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            <% end %>
+          <% else %>
+            <% follow = current_user.active_follows.find_by(followed_id: post.user.id) || current_user.pending_active_follows.find_by(followed_id: post.user.id) %>
+            <% if follow %>
+              <%= button_to follow_path(follow.id, redirect_to: posts_path), method: :delete, data: { confirm: "Are you sure?" }, class: "unfollow inline-flex items-center" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 cursor-pointer">
+                  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-      <% if post.images.attached? %>
-        <% post.images.each do |image| %>
-        <%= image_tag image%>
-        <% end %>
-      <% end %>
+      </div>
+      <hr class="border-t mb-4" >
       <p><%= post.body %></p>
-      <%= link_to "View", post_path(post.id) %>
+      <%= link_to "View", post_path(post.id), class: "text-blue-600 hover:underline text-sm" %>
       <% if current_user.liked_posts.include?(post) %>
-        <%= button_to "Unlike", like_path(post.id, redirect_to: posts_path), method: :delete, data: { confirm: "Are you sure?" } %>
-        <% else %>
-        <%= button_to "Like", likes_path(post_id: post.id, redirect_to: posts_path), method: :post %>
+        <%= button_to like_path(post.id, redirect_to: posts_path), method: :delete, class: "inline-flex items-center", data: { confirm: "Are you sure?" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 cursor-pointer hover:bg-gray-200 rounded">
+            <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+          </svg>
+        <% end %>
+      <% else %>
+        <%= button_to likes_path(post_id: post.id, redirect_to: posts_path), method: :post, class: "inline-flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer hover:bg-gray-200 rounded">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+          </svg>
+        <% end %>
       <% end %>
       <p><%= pluralize(post.likes.count, "likes") %></p>
   </div>
 <% end %>
+</div>
 

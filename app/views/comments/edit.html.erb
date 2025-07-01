@@ -1,22 +1,25 @@
-<h1>Edit your comment!</h1>
+<div class="mt-12 p-6 border border-black-200 container mx-auto max-w-xl">
+    <h2 class="text-2xl font-semibold mb-4">Edit your comment</h2>
 
-<%= form_with model: @comment do |form| %>
-<% if @comment.errors.any? %>
-    <div>
-      <h3><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
-      <ul>
-        <% @comment.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div>
-    <%= form.label :body, "Edit your comment" %><br>
-    <%= form.text_area :body %>
-  </div>
+    <%= form_with model: [@post, @comment], local: true do |form| %>
+      <% if @comment.errors.any? %>
+        <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded">
+          <h3 class="font-semibold mb-2"><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
+          <ul class="list-disc pl-5">
+            <% @comment.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div>
-    <%= form.submit "Update Comment" %>
+      <div class="mb-4">
+        <%= form.label :body, "Your Comment", class: "block font-medium mb-2" %>
+        <%= form.text_area :body, rows: 4, class: "w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
+      <div>
+        <%= form.submit "Update comment", class: "px-3 py-1 rounded cursor-pointer hover:bg-gray-100 border border-gray-300 " %>
+      </div>
+    <% end %>
   </div>
-<% end %>

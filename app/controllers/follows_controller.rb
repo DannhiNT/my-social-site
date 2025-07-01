@@ -18,9 +18,9 @@ class FollowsController < ApplicationController
     @follow = Follow.find(params[:id])
     if @follow.follower == current_user || @follow.followed == current_user
       @follow.destroy
-      redirect_to user_path(current_user.id), notice: "Follow removed!"
+      redirect_to params[:redirect_to] || user_path(current_user.id), notice: "Follow removed!"
     else
-      redirect_to user_path(current_user.id), alert: "Not authorized."
+      redirect_to params[:redirect_to] || user_path(current_user.id), alert: "Not authorized."
     end
   end
 end

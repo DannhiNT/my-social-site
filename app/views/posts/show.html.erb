@@ -1,57 +1,78 @@
-<div class="post">
-    <h1><%= @post.title %></h1>
-    <p class="author"><em><%= @post.user.username %></em></p>
+<%= render 'layouts/nav' %>
+
+<div class="post container mx-auto mt-10 px-8">
+    <h1 class="title text-2xl font-bold mb-2"><%= @post.title %></h1>
+    <p class="author text-md text-gray-500 mb-2 hover:underline cursor-pointer"><em><%= @post.user.username %></em></p>
+    <% if @post.images.attached? %>
+        <% @post.images.each do |image| %>
+        <%= image_tag image, class: "mt-4 rounded-lg w-full object-cover"%>
+        <% end %>
+    <% end %>
     <p><%= @post.body %></p>
     <% if current_user.liked_posts.include?(@post) %>
-        <%= button_to "Unlike", like_path(@post.id, redirect_to: post_path(@post)), method: :delete, data: { confirm: "Are you sure?" } %>
-        <% else %>
-        <%= button_to "Like", likes_path(post_id: @post.id, redirect_to: post_path(@post)), method: :post%>
+        <%= button_to like_path(@post.id, redirect_to: post_path(@post.id)), method: :delete, class: "inline-flex items-center", data: { confirm: "Are you sure?" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 cursor-pointer mt-4 hover:bg-gray-200 rounded">
+            <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+          </svg>
+        <% end %>
+    <% else %>
+      <%= button_to likes_path(post_id: @post.id, redirect_to: post_path(@post.id)), method: :post, class: "inline-flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer mt-4 hover:bg-gray-200 rounded">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+          </svg>
       <% end %>
-      <p><%= pluralize(@post.likes.count, "likes") %></p>
-      <% if @post.liked_users.any? %>
-      <p>Liked by:
-      <% @post.liked_users.each do |liked_user| %>
-      <%= link_to liked_user.username, user_path(liked_user.id) %>
-      <% end %>
-      </p>
-      <% end %>
+    <% end %>
+    <p><%= pluralize(@post.likes.count, "likes") %></p>
 </div>
 
-<div class="comment-section">
-  <h1>Comments</h1>
+<div class="comments container mx-auto mt-10 px-8 ">
+  <h1 class="text-md mb-2 text-2xl font-bold">Comments</h1>
 
   <% @post.comments.each do |comment| %>
-    <div class="comment">
-      <p><strong><%= comment.user.username %>:</strong></p>
-      <p><%= comment.body %></p>
+    <div class="comment flex justify-between items-center">
+      <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
       <% if comment.user == current_user %>
-      <%= button_to "Edit", edit_comment_path(comment.id), method: :get %>
-      <%= button_to "Delete", comment_path(comment.id), method: :delete, data: { confirm: "Are you sure?" } %>
+      <div class="flex gap-5">
+      <%= button_to edit_comment_path(comment.id), method: :get do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 cursor-pointer hover:bg-blue-100 rounded fill-blue-800">
+          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+          <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+        </svg>
+      <% end %>
+      <%= button_to comment_path(comment.id), method: :delete, data: { confirm: "Are you sure?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 cursor-pointer hover:bg-red-100 rounded fill-red-600">
+          <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+        </svg>
+      <% end %>
+      </div>
       <% end %>
     </div>
   <% end %>
   
 
-  <h2>Write a public comment...</h2>
-  <%= form_with model: [@post, @comment] do |form| %>
-    <% if @comment.errors.any? %>
+  <div class="mt-8 p-6 border border-black-200 mb-10">
+    <h2 class="text-2xl font-semibold mb-4">Write a public comment...</h2>
+
+    <%= form_with model: [@post, @comment], local: true do |form| %>
+      <% if @comment.errors.any? %>
+        <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded">
+          <h3 class="font-semibold mb-2"><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
+          <ul class="list-disc pl-5">
+            <% @comment.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-4">
+        <%= form.label :body, "Your Comment", class: "block font-medium mb-2" %>
+        <%= form.text_area :body, rows: 4, class: "w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
       <div>
-        <h3><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
-        <ul>
-          <% @comment.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
+        <%= form.submit "Comment", class: "px-3 py-1 rounded cursor-pointer hover:bg-gray-100 border border-gray-300 " %>
       </div>
     <% end %>
-
-    <div>
-      <%= form.label :body, "Your Comment" %><br>
-      <%= form.text_area :body %>
-    </div>
-
-    <div>
-      <%= form.submit "Post Comment" %>
-    </div>
-  <% end %>
+  </div>
 </div>
