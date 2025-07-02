@@ -8,3 +8,31 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.profile-photo {
+  width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+.edit-my-profile-container {
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  max-width: 10rem;
+}
+
+.edit-my-profile-container:hover {
+  background-color: #e5e7eb;
+}
+
+.create-post-btn {
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  max-width: 15rem;
+}

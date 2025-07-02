@@ -1,19 +1,28 @@
-<h1><%= @user.username %> is following:</h1>
+<section class="container mx-auto mt-10 mb-10 px-8">
 
-<% if @followings.any? %>
-  <ul>
-    <% @followings.each do |followed_user| %>
-      <li>
-        <%= followed_user.username %>
-        <% if followed_user != current_user %>
-          <% follow = current_user.active_follows.find_by(followed_id: followed_user.id) %>
-          <% if follow %>
-            <%= button_to "Unfollow", follow_path(follow.id), method: :delete, data: { confirm: "Are you sure?" } %>
+  <!-- Following heading -->
+  <h1 class="text-2xl font-bold mb-4"><%= @user.username %> is Following:</h1>
+
+  <% if @followings.any? %>
+    <ul class="space-y-4">
+      <% @followings.each do |followed_user| %>
+        <li class="flex justify-between items-center border border-black p-4 hover:bg-gray-50">
+          <span class="font-medium"><%= followed_user.username %></span>
+
+          <% if followed_user != current_user %>
+            <% follow = current_user.active_follows.find_by(followed_id: followed_user.id) %>
+            <% if follow %>
+              <%= button_to "Unfollow", follow_path(follow.id),
+                  method: :delete,
+                  data: { confirm: "Are you sure you want to unfollow this user?" },
+                  class: "px-3 py-1 border border-black hover:bg-red-100 text-red-600 rounded" %>
+            <% end %>
           <% end %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Not following anyone yet.</p>
-<% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="mt-4 text-gray-600">Not following anyone yet.</p>
+  <% end %>
+
+</section>

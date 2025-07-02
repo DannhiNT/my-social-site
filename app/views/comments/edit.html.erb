@@ -1,11 +1,20 @@
-<div class="mt-12 p-6 border border-black-200 container mx-auto max-w-xl">
-    <h2 class="text-2xl font-semibold mb-4">Edit your comment</h2>
+<%= render 'layouts/nav' %>
 
+<div class="mt-12 p-6 container mx-auto max-w-xl">
+
+  <%= link_to request.referrer || post_path(@comment.post.id) do %>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer hover:bg-gray-200 rounded mb-4">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+    </svg>
+  <% end %>
+
+  <div class="p-6 border border-black-200">
+    <h2 class="text-2xl font-semibold mb-4">Edit your comment</h2>
     <%= form_with model: [@post, @comment], local: true do |form| %>
       <% if @comment.errors.any? %>
         <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded">
           <h3 class="font-semibold mb-2"><%= pluralize(@comment.errors.count, "error") %> prevented this comment from being saved:</h3>
-          <ul class="list-disc pl-5">
+          <ul >
             <% @comment.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
             <% end %>
@@ -23,3 +32,4 @@
       </div>
     <% end %>
   </div>
+</div>
