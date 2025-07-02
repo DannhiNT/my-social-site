@@ -12,10 +12,24 @@
   <p class="mb-2"><%= @user.email %></p>
 
  <!-- Edit profile link block -->
-  <div class="edit-my-profile-container hover:bg-gray-200 border border-black">
-    <%= link_to "Edit profile", edit_user_registration_path, class: "py-2" %>
-  </div>
+ <div class="flex flex-row gap-x-4">
 
+    <div class="edit-my-profile-container hover:bg-gray-200 border border-black">
+      <%= link_to "Edit profile", edit_user_registration_path, class: "py-2" %>
+    </div>
+
+    <div class="follow-container hover:bg-gray-200 border border-black">
+      <% unless current_user.followings.include?(@user) || current_user.pending_followings.include?(@user) %>
+        <%= button_to "Follow", follows_path(followed_id: @user.id, redirect_to: user_path(@user.id)), method: :post, class: "follow inline-flex items-center cursor-pointer" %>
+      <% else %>
+        <% follow = current_user.active_follows.find_by(followed_id: @user.id) || current_user.pending_active_follows.find_by(followed_id: @user.id) %>
+        <% if follow %>
+          <%= button_to "Unfollow", follow_path(follow.id, redirect_to: user_path(@user.id)), method: :delete, data: { confirm: "Are you sure?" }, class: "unfollow inline-flex items-center cursor-pointer" %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
   <!-- Following / Followers -->
   <div class="flex flex-row items-center space-x-4 mb-4 mt-4">
     <%= link_to "Following: #{@user.followings.count}", followings_user_path(@user.id), class: "text-blue-600 hover:underline mr-4" %> 

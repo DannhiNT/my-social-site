@@ -5,7 +5,7 @@ class FollowsController < ApplicationController
     unless current_user.pending_followings.include?(@user) || current_user.followings.include?(@user)
       current_user.active_follows.create(followed_id: @user.id, status: "pending")
     end
-    redirect_to posts_path, notice: "Follow request sent to #{@user.username}."
+    redirect_to params[:redirect_to]|| user_path(current_user.id), notice: "Follow request sent to #{@user.username}."
   end
 
   def approve

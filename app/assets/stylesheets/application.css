@@ -25,8 +25,12 @@
   max-width: 10rem;
 }
 
-.edit-my-profile-container:hover {
-  background-color: #e5e7eb;
+.follow-container {
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  max-width: 10rem;
 }
 
 .create-post-btn {
