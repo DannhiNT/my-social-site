@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "~> 3.4.0"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -76,3 +78,11 @@ gem "omniauth", "~> 2.1"
 gem "tailwindcss-ruby", "~> 4.1"
 
 gem "tailwindcss-rails", "~> 4.2"
+
+gem "sd_notify", "~> 0.1.1"
+
+gem "capistrano", "~> 3.19"
+gem "capistrano3-puma", "~> 6.2"
+gem "capistrano-rails", "~> 1.7"
+
+gem "capistrano-rvm", "~> 0.1.2"

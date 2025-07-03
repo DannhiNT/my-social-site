@@ -37,7 +37,6 @@ set :puma_error_log, "#{release_path}/log/puma.error.log"
 # ssh options
 set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w[~/.ssh/id_ed25519] }
 
-
 # puma advanced settings
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
