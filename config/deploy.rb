@@ -47,4 +47,4 @@ append :linked_files, "config/master.key", ".env", "config/database.yaml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "storage"
 
 
-set :linked_files, fetch(:linked_files, []).push("config/.env")
+set :linked_files, fetch(:linked_files, []).push(".env")
