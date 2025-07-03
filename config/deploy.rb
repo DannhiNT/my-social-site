@@ -43,7 +43,7 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true
 
 # link dirs and files
-append :linked_files, "config/master.key", ".env", "config/database.yaml"
+append :linked_files, "config/master.key", ".env", "config/database.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "storage"
 
 
