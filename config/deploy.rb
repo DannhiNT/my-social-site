@@ -45,3 +45,6 @@ set :puma_init_active_record, true
 # link dirs and files
 append :linked_files, "config/master.key", ".env", "config/database.yaml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "storage"
+
+
+set :linked_files, fetch(:linked_files, []).push("config/.env")
