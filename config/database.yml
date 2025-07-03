@@ -70,7 +70,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: postgresql
-    username: deploy
+    database: mysite_production
+    username: rails
     host: localhost
     password: <%= ENV["SOCIAL_APP_DATABASE_PASSWORD"] %>
