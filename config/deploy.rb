@@ -11,7 +11,7 @@ set :repo_url, "git@github.com:DannhiNT/my-social-site.git"
 # git info
 set :branch, "main"
 
-# ssh user
+# ssh server user
 set :user, "deploy"
 
 # where to deploy
@@ -33,6 +33,9 @@ set :puma_state, "#{shared_path}/tmp/pids/puma.state"
 set :puma_pid, "#{shared_path}/tmp/pids/puma.pid"
 set :puma_access_log, "#{release_path}/log/puma.access.log"
 set :puma_error_log, "#{release_path}/log/puma.error.log"
+
+# Point to correct systemd unit:
+set :puma_service_unit_name, "puma_mysocialsite_production"
 
 # ssh options
 set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w[~/.ssh/id_ed25519] }
