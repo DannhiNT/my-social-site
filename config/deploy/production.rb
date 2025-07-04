@@ -59,3 +59,5 @@
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+server "46.137.198.182", user: "deploy", roles: %w[app db web], ssh_options: { forward_agent: true }
