@@ -39,6 +39,26 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
-
+# Specify the PID file. Defaults to tmp/pids/server.pid in development.
+# In other environments, only set the PID file if requested.
+# pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+directory "/home/deploy/apps/mysocialsite/current"
+rackup "/home/deploy/apps/mysocialsite/current/config.ru"
+environment "production"
+pidfile "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.pid"
+state_path "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.state"
+stdout_redirect "/home/deploy/apps/mysocialsite/shared/log/puma_access.log", "/home/deploy/apps/mysocialsite/shared/log/puma_error.log", true
 # Bind Puma to a UNIX socket
 bind "unix:///home/deploy/apps/mysocialsite/shared/tmp/sockets/puma.sock"
+
+workers 2
+preload_app!
+on_restart do
+  puts "Refreshing Gemfile"
+  ENV["BUNDLE_GEMFILE"] = "/home/deploy/apps/mysocialsiteq/current/Gemfile"
+end
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end
