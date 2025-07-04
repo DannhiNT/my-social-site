@@ -49,4 +49,6 @@ set :puma_init_active_record, true
 append :linked_files, "config/master.key", ".env", "config/database.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "storage"
 
-# password
+# lang
+
+set :default_env, { LANG: "C.UTF-8", LC_ALL: "C.UTF-8" }
