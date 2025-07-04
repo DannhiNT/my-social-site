@@ -46,5 +46,4 @@ set :puma_init_active_record, true
 append :linked_files, "config/master.key", ".env", "config/database.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "storage"
 
-
-set :linked_files, fetch(:linked_files, []).push(".env")
+# password
