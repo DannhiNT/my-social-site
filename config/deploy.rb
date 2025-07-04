@@ -52,3 +52,15 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor", "s
 # lang
 
 set :default_env, { LANG: "C.UTF-8", LC_ALL: "C.UTF-8" }
+
+
+namespace :puma do
+  desc "Restart Puma"
+  task :restart do
+    on roles(:app) do
+      execute :sudo, :systemctl, :restart, "puma_mysocialsite_production.service"
+    end
+  end
+end
+
+after "deploy:publishing", "puma:restart"
