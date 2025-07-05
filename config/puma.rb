@@ -49,7 +49,8 @@ pidfile "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.pid"
 state_path "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.state"
 stdout_redirect "/home/deploy/apps/mysocialsite/shared/log/puma_access.log", "/home/deploy/apps/mysocialsite/shared/log/puma_error.log", true
 # Bind Puma to a UNIX socket
-bind "unix:///home/deploy/apps/mysocialsite/shared/tmp/sockets/puma.sock"
+bind "unix:///home/deploy/apps/mysocialsite/shared/tmp/sockets/mysocialsite-puma.sock"
+
 
 workers 2
 preload_app!
