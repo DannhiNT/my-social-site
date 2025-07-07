@@ -2,7 +2,7 @@
 lock "~> 3.19.2"
 
 # server def
-server "46.137.198.182", port: 22, roles: [ :web, :app, :db ], primary: true
+server "18.143.172.153", port: 22, roles: [ :web, :app, :db ], primary: true
 
 # basic prj info
 set :application, "mysocialsite"
@@ -63,4 +63,8 @@ namespace :puma do
   end
 end
 
-after "deploy:publishing", "puma:restart"
+# after "deploy:publishing", "puma:restart"
+
+set :puma_bind, "unix://#{shared_path}/tmp/sockets/puma.sock"
+
+set :puma_systemctl_user, :system
