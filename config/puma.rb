@@ -28,7 +28,7 @@ threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-# port ENV.fetch("PORT", 3001)
+port ENV.fetch("PORT", 3001)
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
@@ -48,8 +48,9 @@ environment "production"
 pidfile "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.pid"
 state_path "/home/deploy/apps/mysocialsite/shared/tmp/pids/puma.state"
 stdout_redirect "/home/deploy/apps/mysocialsite/shared/log/puma_access.log", "/home/deploy/apps/mysocialsite/shared/log/puma_error.log", true
+
 # Bind Puma to a UNIX socket
-bind "unix:///home/deploy/apps/mysocialsite/shared/tmp/sockets/mysocialsite-puma.sock"
+bind "unix:///home/deploy/apps/mysocialsite/shared/tmp/sockets/puma.sock"
 
 
 workers 2
